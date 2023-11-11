@@ -1,5 +1,20 @@
 basePath: /v1
 definitions:
+  entity.Gateway:
+    properties:
+      destination:
+        example: en
+        type: string
+      original:
+        example: la posta posta
+        type: string
+      source:
+        example: auto
+        type: string
+      translation:
+        example: text for translation
+        type: string
+    type: object
   entity.Translation:
     properties:
       destination:
@@ -14,6 +29,22 @@ definitions:
       translation:
         example: text for translation
         type: string
+    type: object
+  v1.doRouteRequest:
+    properties:
+      destination:
+        example: en
+        type: string
+      original:
+        example: текст для перевода
+        type: string
+      source:
+        example: auto
+        type: string
+    required:
+    - destination
+    - original
+    - source
     type: object
   v1.doTranslateRequest:
     properties:
@@ -30,6 +61,11 @@ definitions:
     - destination
     - original
     - source
+    type: object
+  v1.gatewayResponse:
+    properties:
+      gateway:
+        $ref: '#/definitions/entity.Gateway'
     type: object
   v1.historyResponse:
     properties:
@@ -51,6 +87,57 @@ info:
   title: Go Clean Template API
   version: "1.0"
 paths:
+  /gateway/history:
+    get:
+      consumes:
+      - application/json
+      description: Show all gateway history
+      operationId: gateway-history
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.gatewayResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: Show history
+      tags:
+      - gateway
+  /gateway/route:
+    post:
+      consumes:
+      - application/json
+      description: Route a text
+      operationId: do-route
+      parameters:
+      - description: Set up gateway
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.doRouteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Gateway'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+      summary: Route
+      tags:
+      - gateway
   /translation/do-translate:
     post:
       consumes:

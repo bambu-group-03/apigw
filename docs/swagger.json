@@ -9,6 +9,83 @@
     "host": "localhost:8080",
     "basePath": "/v1",
     "paths": {
+        "/gateway/history": {
+            "get": {
+                "description": "Show all gateway history",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gateway"
+                ],
+                "summary": "Show history",
+                "operationId": "gateway-history",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.gatewayResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    }
+                }
+            }
+        },
+        "/gateway/route": {
+            "post": {
+                "description": "Route a text",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gateway"
+                ],
+                "summary": "Route",
+                "operationId": "do-route",
+                "parameters": [
+                    {
+                        "description": "Set up gateway",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.doRouteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Gateway"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/v1.response"
+                        }
+                    }
+                }
+            }
+        },
         "/translation/do-translate": {
             "post": {
                 "description": "Translate a text",
@@ -88,6 +165,27 @@
         }
     },
     "definitions": {
+        "entity.Gateway": {
+            "type": "object",
+            "properties": {
+                "destination": {
+                    "type": "string",
+                    "example": "en"
+                },
+                "original": {
+                    "type": "string",
+                    "example": "la posta posta"
+                },
+                "source": {
+                    "type": "string",
+                    "example": "auto"
+                },
+                "translation": {
+                    "type": "string",
+                    "example": "text for translation"
+                }
+            }
+        },
         "entity.Translation": {
             "type": "object",
             "properties": {
@@ -106,6 +204,28 @@
                 "translation": {
                     "type": "string",
                     "example": "text for translation"
+                }
+            }
+        },
+        "v1.doRouteRequest": {
+            "type": "object",
+            "required": [
+                "destination",
+                "original",
+                "source"
+            ],
+            "properties": {
+                "destination": {
+                    "type": "string",
+                    "example": "en"
+                },
+                "original": {
+                    "type": "string",
+                    "example": "текст для перевода"
+                },
+                "source": {
+                    "type": "string",
+                    "example": "auto"
                 }
             }
         },
@@ -128,6 +248,14 @@
                 "source": {
                     "type": "string",
                     "example": "auto"
+                }
+            }
+        },
+        "v1.gatewayResponse": {
+            "type": "object",
+            "properties": {
+                "gateway": {
+                    "$ref": "#/definitions/entity.Gateway"
                 }
             }
         },

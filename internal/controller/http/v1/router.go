@@ -10,6 +10,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	// Swagger docs.
+	"github.com/bambu-group-03/apigw/config"
 	_ "github.com/bambu-group-03/apigw/docs"
 	"github.com/bambu-group-03/apigw/internal/usecase"
 	"github.com/bambu-group-03/apigw/pkg/logger"
@@ -22,7 +23,7 @@ import (
 // @version     1.0
 // @host        localhost:8080
 // @BasePath    /v1
-func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation) {
+func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation, cfg *config.Config) {
 	// Options
 	handler.Use(gin.Logger())
 	handler.Use(gin.Recovery())
@@ -41,5 +42,6 @@ func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation) {
 	h := handler.Group("/v1")
 	{
 		newTranslationRoutes(h, t, l)
+		newGatewayRoutes(h, l, cfg)
 	}
 }
