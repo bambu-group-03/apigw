@@ -14,6 +14,7 @@ type (
 		Log  `yaml:"logger"`
 		PG   `yaml:"postgres"`
 		RMQ  `yaml:"rabbitmq"`
+		SERVICE
 	}
 
 	// App -.
