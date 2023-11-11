@@ -29,10 +29,11 @@ Using the principles of Robert Martin (aka Uncle Bob).
 ## Quick start
 Local development:
 ```sh
+cp .env.example .env
+
 # Postgres, RabbitMQ
 $ make compose-up
 # copy env local from services up by compose
-cp .env.example .env
 
 # install deps globally
 make bin-deps
