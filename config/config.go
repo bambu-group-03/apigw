@@ -9,12 +9,12 @@ import (
 type (
 	// Config -.
 	Config struct {
-		App  `yaml:"app"`
-		HTTP `yaml:"http"`
-		Log  `yaml:"logger"`
-		PG   `yaml:"postgres"`
-		RMQ  `yaml:"rabbitmq"`
-		SERVICE
+		App     `yaml:"app"`
+		HTTP    `yaml:"http"`
+		Log     `yaml:"logger"`
+		PG      `yaml:"postgres"`
+		RMQ     `yaml:"rabbitmq"`
+		SERVICE `yaml:"service"`
 	}
 
 	// App -.
