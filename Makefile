@@ -32,7 +32,8 @@ swag-v1: ### swag init
 .PHONY: swag-v1
 
 run: swag-v1 ### swag run
-	go mod tidy && go mod download && GIN_MODE=debug CGO_ENABLED=0 go run -tags migrate ./cmd/app
+	@go mod tidy && go mod download
+	@air
 .PHONY: run
 
 build: swag-v1 ## Build the application
@@ -78,3 +79,4 @@ bin-deps:
 	GOBIN=$(LOCAL_BIN) go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/golang/mock/mockgen@latest
 	go install github.com/swaggo/swag/cmd/swag@v1.7.6
+	go install github.com/cosmtrek/air@latest
