@@ -8,7 +8,7 @@ build:
     dockerfile: Dockerfile
 deploy:
   compose:
-  - file: docker-compose.yml
+  - file: docker-compose.okteto.yml
   endpoints:
   - path: /
     service: app

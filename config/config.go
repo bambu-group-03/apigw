@@ -37,6 +37,10 @@ type (
 		PoolMax int    `env-required:"true" yaml:"pool_max" env:"PG_POOL_MAX"`
 		URL     string `env-required:"true"                 env:"PG_URL"`
 	}
+	SERVICE struct {
+		IDENTITY_SOCIALIZER_URL string `env-required:"true" env:"IDENTITY_SERIALIZER_URL"`
+		CONTENT_DISCOVERY_URL   string `env-required:"true" env:"CONTENT_DISCOVERY_URL"`
+	}
 
 	// RMQ -.
 	RMQ struct {
