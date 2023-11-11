@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	"github.com/bambu-group-03/apigw/config"
@@ -48,6 +49,11 @@ func Run(cfg *config.Config) {
 
 	// HTTP Server
 	handler := gin.New()
+
+	// CORS
+	handler.Use(cors.Default())
+
+	// MAIN APP ENTRYPOINT
 	v1.NewRouter(handler, l, translationUseCase, cfg)
 	httpServer := httpserver.New(handler, httpserver.Port(cfg.HTTP.Port))
 
