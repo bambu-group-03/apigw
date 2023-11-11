@@ -11,7 +11,7 @@ func main() {
 	// Configuration
 	cfg, err := config.NewConfig()
 	if err != nil {
-		log.Fatalf("Config error: %s", err)
+		log.Fatalf("Config error:  github.com/bambu-group-03/apigw/internal/app %s", err)
 	}
 
 	// Run
