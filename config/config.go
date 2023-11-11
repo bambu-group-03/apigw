@@ -2,8 +2,10 @@ package config
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/joho/godotenv"
 )
 
 type (
@@ -38,8 +40,10 @@ type (
 		PoolMax int    `env-required:"true" yaml:"pool_max" env:"PG_POOL_MAX"`
 		URL     string `env-required:"true"                 env:"PG_URL"`
 	}
+
+	// SERVICE -.
 	SERVICE struct {
-		IDENTITY_SOCIALIZER_URL string `env-required:"true" env:"IDENTITY_SERIALIZER_URL"`
+		IDENTITY_SOCIALIZER_URL string `env-required:"true" env:"IDENTITY_SOCIALIZER_URL"`
 		CONTENT_DISCOVERY_URL   string `env-required:"true" env:"CONTENT_DISCOVERY_URL"`
 	}
 
@@ -55,11 +59,14 @@ type (
 func NewConfig() (*Config, error) {
 	cfg := &Config{}
 
-	err := cleanenv.ReadConfig("./config/config.yml", cfg)
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	err = cleanenv.ReadConfig("./config/config.yml", cfg)
 	if err != nil {
 		return nil, fmt.Errorf("config error: %w", err)
 	}
-
 	err = cleanenv.ReadEnv(cfg)
 	if err != nil {
 		return nil, err
