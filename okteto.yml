@@ -1,4 +1,4 @@
-name: identity_socializer
+name: apigw
 
 # The build section defines how to build the images of your development environment
 # More info: https://www.okteto.com/docs/reference/manifest/#build
