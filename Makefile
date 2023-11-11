@@ -30,7 +30,7 @@ swag-v1: ### swag init
 
 run: swag-v1 ### swag run
 	go mod tidy && go mod download && \
-	DISABLE_SWAGGER_HTTP_HANDLER='' GIN_MODE=debug CGO_ENABLED=0 go run -tags migrate ./cmd/app
+	DISABLE_SWAGGER_HTTP_HANDLER='false' GIN_MODE=debug CGO_ENABLED=0 go run -tags migrate ./cmd/app
 .PHONY: run
 
 docker-rm-volume: ### remove docker volume
@@ -72,3 +72,4 @@ migrate-up: ### migration up
 bin-deps:
 	GOBIN=$(LOCAL_BIN) go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/golang/mock/mockgen@latest
+	go install github.com/swaggo/swag/cmd/swag@v1.7.6

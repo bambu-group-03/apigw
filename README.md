@@ -31,6 +31,12 @@ Local development:
 ```sh
 # Postgres, RabbitMQ
 $ make compose-up
+# copy env local from services up by compose
+cp .env.example .env
+
+# install deps globally
+make bin-deps
+
 # Run app with migrations
 $ make run
 ```
