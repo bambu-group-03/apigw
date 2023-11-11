@@ -61,7 +61,7 @@ func NewConfig() (*Config, error) {
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Default().Println("Error loading .env file")
 	}
 	err = cleanenv.ReadConfig("./config/config.yml", cfg)
 	if err != nil {
