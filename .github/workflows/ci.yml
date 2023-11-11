@@ -77,3 +77,16 @@ jobs:
           --build \
           --abort-on-container-exit \
           --exit-code-from integration"
+  devflow:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@master
+    - uses: okteto/context@latest
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+    - name: "Create deployment"
+      uses: luiscusihuaman/okteto-deploy@main
+      with:
+        file: okteto.yml
+        build: "true"

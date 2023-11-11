@@ -1,0 +1,16 @@
+name: identity_socializer
+
+# The build section defines how to build the images of your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#build
+build:
+  api:
+    context: .
+    dockerfile: Dockerfile
+deploy:
+  compose:
+  - file: docker-compose.yml
+  endpoints:
+  - path: /
+    service: app
+    port: 8080
+namespace: apigw-luiscusihuaman
