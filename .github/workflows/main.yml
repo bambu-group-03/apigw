@@ -1,0 +1,39 @@
+name: Go CI/CD Pipeline with Makefile
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.18'
+    - name: Install Dependencies
+      run: |
+        make bin-deps
+    - name: Build
+      run: |
+        make build
+        # export $(cat .env | xargs)
+  devflow:
+    name: Deploy to Okteto
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - uses: okteto/context@latest
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+    - name: "Create deployment"
+      uses: luiscusihuaman/okteto-deploy@main
+      with:
+        file: okteto.yml
+        build: "true"
