@@ -32,13 +32,12 @@ swag-v1: ### swag init
 .PHONY: swag-v1
 
 run: swag-v1 ### swag run
-	go mod tidy && go mod download && \
-	DISABLE_SWAGGER_HTTP_HANDLER='false' GIN_MODE=debug CGO_ENABLED=0 go run -tags migrate ./cmd/app
+	go mod tidy && go mod download && GIN_MODE=debug CGO_ENABLED=0 go run -tags migrate ./cmd/app
 .PHONY: run
 
 build: swag-v1 ## Build the application
 	go build -o apigw ./cmd/app
- 
+
 docker-rm-volume: ### remove docker volume
 	docker volume rm go-clean-template_pg-data
 .PHONY: docker-rm-volume
