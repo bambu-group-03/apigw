@@ -31,7 +31,7 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		adminToken := c.GetHeader("adminToken")
 
 		// Check if the tokens are present
-		if clientToken == "" || adminToken == "" {
+		if clientToken == "" && adminToken == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "API token required"})
 			return
 		}
