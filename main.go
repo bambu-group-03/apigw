@@ -13,6 +13,11 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var adminOnlyRoutes = []string{
+	// "/gateway/route/identity/megahypersecret",
+	// Add other admin-only routes here
+}
+
 // NewSingleHostReverseProxyWithRewrite creates a reverse proxy with path rewriting
 func NewSingleHostReverseProxyWithRewrite(target *url.URL, pathPrefix string) *httputil.ReverseProxy {
 	director := func(req *http.Request) {
@@ -30,13 +35,22 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		clientToken := c.GetHeader("clientToken")
 		adminToken := c.GetHeader("adminToken")
 
-		// Check if the tokens are present
-		if clientToken == "" && adminToken == "" {
+		// Check if the requested route is in the admin-only list
+		for _, adminRoute := range adminOnlyRoutes {
+			if strings.HasPrefix(c.Request.URL.Path, adminRoute) {
+				// For admin-only routes, require the adminToken
+				if adminToken == "" {
+					c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Admin token required"})
+					return
+				}
+				break
+			}
+		}
+
+		if clientToken == "" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "API token required"})
 			return
 		}
-
-		// Additional token validation logic can be added here
 
 		c.Next() // Proceed to the next handler if validation is successful
 	}
