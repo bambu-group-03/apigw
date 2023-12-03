@@ -8,8 +8,10 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/martian/v3/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -88,6 +90,16 @@ func main() {
 	router := gin.Default()
 	router.SetTrustedProxies(nil)
 	// Apply the middleware globally
+
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Accept", "clientToken", "adminToken"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	router.Use(TokenAuthMiddleware())
 
 	// Group routes under /gateway/route
