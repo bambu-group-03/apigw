@@ -92,7 +92,7 @@ func main() {
 	// Apply the middleware globally
 
 	router.Use(cors.New(cors.Config{
-		AllowAllOrigins:  true,
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Accept", "clientToken", "adminToken"},
 		ExposeHeaders:    []string{"Content-Length"},
