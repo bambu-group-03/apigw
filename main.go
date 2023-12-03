@@ -28,7 +28,15 @@ func NewSingleHostReverseProxyWithRewrite(target *url.URL, pathPrefix string) *h
 		req.URL.Path = strings.TrimPrefix(req.URL.Path, pathPrefix)
 		req.Host = target.Host // This preserves the original Host header
 	}
-	return &httputil.ReverseProxy{Director: director}
+	modifyResponse := func(res *http.Response) error {
+		// Remove CORS headers set by the target server
+		res.Header.Del("Access-Control-Allow-Origin")
+		res.Header.Del("Access-Control-Allow-Methods")
+		res.Header.Del("Access-Control-Allow-Headers")
+		res.Header.Del("Access-Control-Allow-Credentials")
+		return nil
+	}
+	return &httputil.ReverseProxy{Director: director, ModifyResponse: modifyResponse}
 }
 
 // TokenAuthMiddleware is a middleware function for token authentication
