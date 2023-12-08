@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: apigw-luiscusihuaman
+  name: apigw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apigw
+      stack.okteto.com/name: apigw
+      stack.okteto.com/service: apigw
+  template:
+    metadata:
+      labels:
+        app: apigw
+    spec:
+      containers:
+        - name: apigw
+          image: $OKTETO_BUILD_APP_IMAGE
+          ports:
+            - containerPort: 8080
+          env:
+            - name: CONTENT_DISCOVERY_URL
+              value: http://api.content-discovery-luiscusihuaman:9000
+            - name: IDENTITY_SOCIALIZER_URL
+              value: http://api.identity-socializer-luiscusihuaman:8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: apigw-luiscusihuaman
+  name: apigw
+  annotations:
+    dev.okteto.com/auto-ingress: "true"
+spec:
+  selector:
+    app: apigw
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

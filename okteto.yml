@@ -7,10 +7,8 @@ build:
     context: .
     dockerfile: Dockerfile
 deploy:
-  compose:
-  - file: docker-compose.yml
-  endpoints:
-  - path: /
-    service: app
-    port: 8080
+  commands:
+    - echo $OKTETO_BUILD_APP_IMAGE
+    - command -v envsubst &> /dev/null || (apk add -u gettext && ln -s /usr/bin/envsubst /usr/local/bin/envsubst)
+    - envsubst < deploy/kube/app.yml | kubectl apply -f -
 namespace: apigw-luiscusihuaman
